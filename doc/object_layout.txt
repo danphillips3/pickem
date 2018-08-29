@@ -1,0 +1,40 @@
+Object Layout
+
+User
++ int id -> unique numeric id
++ string email -> email associated with account
++ bool is_admin -> admin users can login to content management screen to add games, add winners, etc
++ enum authentication_source -> how to authenticate this user
+    - INTERNAL: user created by us
+    - FACEBOOK: authenticate w/ facebook
+    - GOOGLE: authenticate w/ google
++ string password -> hashed password.  Used if authentication_source = INTERNAL. Otherwise blank.
++ bool enabled -> helpful to have this flag in case we need to delete a user
+
+
+Game
++ int id -> unique numeric id
++ boo enabled -> helpful to have in case we need to remove a game
++ string start_date -> date of game with format "YYYY-MM-DD"
++ string start_time -> time of game start with format "HH:MM:SS". All times stored in EST.
++ enum state -> current game state
+    - PENDING: has not started
+    - ACTIVE: has started but not finished
+    - COMPLETE: over
++ int point_value -> number of points awarded if picked correctly. maybe this will always be the same value, maybe it can be more or less depending on the game
++ string description -> description of game (ex. "Jets vs Bills")
++ string link -> url where users can go to check score of the game (would be a link to espn/some other site, just for convenience)
++ list<string> options -> list of selection options (ex. ["Jets", "Bills"]). List allows for more than 2 options (in the case of picking golf, nascar, etc)
++ int winner -> index of winning option in the options list.  If state is PENDING or ACTIVE, this value will be -1.
+
+
+Selection
++ int selection_id -> unique id for selection
++ int user_id -> user id for selection
++ int game_id -> game id for selection
++ int selection_index -> index for selected option
+
+
+
+
+

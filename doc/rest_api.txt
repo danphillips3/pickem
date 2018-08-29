@@ -1,0 +1,137 @@
+REST API w/ sample requests/responses 
+
+all requests/responses sent as json. requests to modify data (such as selecting a winner) will require token which will be provided on login 
+
+user : operations related to users
+
+GET /api/user -> returns list of all enabled users
+REQUEST:
+{ 
+    "users": [
+        {
+            "id": 1
+            "email": "danphillips3@gmail.com",
+            "is_admin": true,
+            "authentication_source": "INTERNAL"
+        }
+    ]
+}
+
+GET /api/user/{userId} -> returns single user detail
+REQUEST:
+{
+    {
+        "id": 1
+        "email": "danphillips3@gmail.com",
+        "is_admin": true,
+        "authentication_source": "INTERNAL"
+    }
+}
+
+POST /api/user -> add user 
+REQUEST:
+{ 
+    "email": "danphillips3@gmail.com",
+    "is_admin": true,
+    "authentication_source": "INTERNAL",
+    "password": "test123"
+}
+RESPONSE:
+{
+    "success": true
+}
+
+
+game : operations related to games
+
+GET /api/game/{date} -> returns list of all enabled games on a specified date (YYYY-MM-DD)
+RESPONSE:
+{
+    "games": ['
+        {
+            "id": 1,
+            "start_time": "13:00:00",
+            "state": "COMPLETE",
+            "point_value": 100,
+            "description": "Mets Vs Yankees",
+            "link": "espn.com/4353",
+            "options": ["Mets", "Yankees"],
+            "winner": 1
+        },
+        {
+            "id": 2,
+            "start_time": "21:05:00",
+            "state": "ACTIVE",
+            "point_value": 100,
+            "description": "Jets vs Bills",
+            "link": "espn.com/4353",
+            "options": ["Jets", "Bills"],
+            "winner": -1
+        }
+    ] 
+}
+
+POST /api/game -> add or modify game. If id is provided, treated as modify.  If id is not provided, treated as insert. Token required and provided on login
+REQUEST: 
+{
+    {
+        "auth_token" "wefjwiefjiwo",
+        "start_date": "2018-08-28",
+        "start_time": "13:00:00",
+        "point_value": 100,
+        "description": "Mets Vs Yankees",
+        "link": "espn.com/4353",
+        "options": ["Mets", "Yankees"]
+    }
+}
+RESPONSE:
+{
+    "success": true
+}
+
+
+selection :  operations releated to making selections
+
+GET /api/selection/{userId}/{date} -> gets all selections for user on date
+RESPONSE:
+{
+    "selections": [
+        {
+            "selection_id": 500,
+            "game_id": 1,
+            "selection_index": 0
+        },
+        {
+            "selection_id": 501,
+            "game_id": 2,
+            "selection_index": 1
+        }
+    ]
+}
+
+POST /api/selection -> add or modify a selection. Token required & provided on login. 
+REQUEST:
+{
+    "user_id": 1,
+    "game_id": 1,
+    "selection_index": 0
+}
+RESPONSE:
+{
+    "success": true
+}
+
+
+login : operations releated to logging in a user
+
+POST /api/login -> login a user. Token will be provided which can be used in other requests
+REQUEST:
+{
+    "email": "danphillips3@gmail.com",
+    "password": "test123"
+}
+RESPONSE:
+{
+    "success": true,
+    "token": "r32rfjewjfiw"
+}
